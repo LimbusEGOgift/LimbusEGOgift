@@ -1,13 +1,12 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { CustomOrigin } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import 'reflect-metadata'
+import 'reflect-metadata';
 
-async function swagger(app: INestApplication) {
+function swagger(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('REST API Documentation')
@@ -55,7 +54,6 @@ async function bootstrap() {
     CORS_ORIGIN = true;
   }
 
-  app.use(cookieParser());
   app.enableCors({
     origin: CORS_ORIGIN,
     methods: config.get<string>('CORS_METHODS', 'GET,PUT,PATCH,POST,DELETE'),
@@ -65,7 +63,7 @@ async function bootstrap() {
   });
 
   if (config.get<boolean>('SWAGGER_ENABLED', NODE_ENV === 'development')) {
-    await swagger(app);
+    swagger(app);
     Logger.log(
       `Swagger is enabled on http://localhost:${servicePort}/document`,
       'Bootstrap',
@@ -79,4 +77,4 @@ async function bootstrap() {
     'Bootstrap',
   );
 }
-bootstrap();
+void bootstrap();
