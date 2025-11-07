@@ -1,7 +1,6 @@
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { CustomOrigin } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -55,7 +54,6 @@ async function bootstrap() {
     CORS_ORIGIN = true;
   }
 
-  app.use(cookieParser());
   app.enableCors({
     origin: CORS_ORIGIN,
     methods: config.get<string>('CORS_METHODS', 'GET,PUT,PATCH,POST,DELETE'),
