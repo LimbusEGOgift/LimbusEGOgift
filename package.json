@@ -18,8 +18,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky",
     "postinstall": "husky install",
-    "format": "prettier --cache --write .",
-    "lint": "eslint --cache ."
+    "format": "prettier --write .",
+    "lint": "node node_modules/eslint/bin/eslint.js \"src/**/*.ts\" --fix",
+    "lint:fix": "node ./node_modules/eslint/bin/eslint.js \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
