@@ -1,19 +1,18 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
-import { IdentityService } from "./identity.service";
-import { FindEGOGiftDto } from "./dto/findEGOGift.dto";
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { IdentityService } from './identity.service';
+import { FindEGOGiftDto } from './dto/findEGOGift.dto';
 
-@Controller({ path: "identity" })
+@Controller({ path: 'identity' })
 export class IdentityController {
   constructor(private readonly app: IdentityService) {}
 
   @Get()
-  findIdentity(){
+  findIdentity() {
     return this.app.findIdentityList();
   }
 
   @Post()
-  findEGOGift(@Body() dto: FindEGOGiftDto){
+  findEGOGift(@Body() dto: FindEGOGiftDto) {
     return this.app.findEGOGiftForIdentity(dto);
   }
-
 }
