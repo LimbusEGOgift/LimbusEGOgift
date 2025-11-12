@@ -15,7 +15,7 @@ export class IdentityService {
     await Promise.all(
       entries.map(async (ent) => {
         const p = join('identity', ent.name);
-        const Sinner = await readFile(p, 'utf-8');
+        const Sinner: string = await readFile(p, 'utf-8');
         const parsed: JSON[] = JSON.parse(Sinner);
         const Identitys = Object.keys(parsed);
         result[basename(ent.name, '.json')] = Identitys;
@@ -30,8 +30,8 @@ export class IdentityService {
     // const result: KeyMap = {};
 
     // 인격의 키워드를 가져옴
-    const Sinner = await readFile(`identity/${dto.sinner}.json`, 'utf-8');
-    const keyWord: KeyMap = JSON.parse(Sinner)[dto.identity]['키워드'];
+    const Sinner: string = await readFile(`identity/${dto.sinner}.json`, 'utf-8');
+    const keyWord: KeyMap = JSON.parse(Sinner)[`${dto.identity}`]['키워드'];
 
     return keyWord;
   }
