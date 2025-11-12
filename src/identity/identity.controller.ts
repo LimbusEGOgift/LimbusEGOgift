@@ -6,13 +6,13 @@ import { FindEGOGiftDto } from './dto/findEGOGift.dto';
 export class IdentityController {
   constructor(private readonly app: IdentityService) {}
 
-  @Get()
-  findIdentity() {
-    return this.app.findIdentityList();
-  }
+  // @Get()
+  // findIdentity() {
+  //   return this.app.findIdentityList();
+  // }
 
-  @Post()
-  findEGOGift(@Body() dto: FindEGOGiftDto) {
-    return this.app.findEGOGiftForIdentity(dto);
-  }
+  // @Post()
+  // findEGOGift(@Body() dto: FindEGOGiftDto) {
+  //   return this.app.findEGOGiftForIdentity(dto);
+  // }
 }
