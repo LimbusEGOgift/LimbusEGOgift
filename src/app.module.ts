@@ -6,7 +6,7 @@ import { HealthModule } from './health/health.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule.forRoot(), HealthModule, /*IdentityModule*/],
+  imports: [ConfigModule.forRoot(), HealthModule /*IdentityModule*/],
   controllers: [AppController],
   providers: [AppService],
 })
