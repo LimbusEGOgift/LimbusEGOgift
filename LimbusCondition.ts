@@ -57,138 +57,138 @@ export type Skill =
 
 export type Forming =
   // 5인 이상
-  | "5Sinners"
+  | '5Sinners'
   // 3인 이상
-  | "3Sinners";
+  | '3Sinners';
 
 export type Trait =
   // 림버스 컴퍼니
-  | "LimbusCompany"
+  | 'LimbusCompany'
   // LCB
-  | "LCB"
+  | 'LCB'
   // LCE
-  | "LCE"
+  | 'LCE'
   // 해결사
-  | "Fixer"
+  | 'Fixer'
   // 세븐 협회
-  | "SevenAssoc"
+  | 'SevenAssoc'
   // 어금니 사무소
-  | "MolarOffice"
+  | 'MolarOffice'
   // 피쿼드호
-  | "ThePequod"
+  | 'ThePequod'
   // 디에치 협회
-  | "DieciAssoc"
+  | 'DieciAssoc'
   // E.G.O 장비
-  | "EGOGear"
+  | 'EGOGear'
   // 조직
-  | "Syndicate"
+  | 'Syndicate'
   // 검계
-  | "BladeLineage"
+  | 'BladeLineage'
   // 기술해방연합
-  | "TechnologyLiberationAlliance"
+  | 'TechnologyLiberationAlliance'
   // W사
-  | "WCorp"
+  | 'WCorp'
   // 약지
-  | "TheRing"
+  | 'TheRing'
   // 로보토미 본사
-  | "LobotomyHeadquarters"
+  | 'LobotomyHeadquarters'
   // 리우 협회
-  | "LiuAssoc"
+  | 'LiuAssoc'
   // N사
-  | "NCorp"
+  | 'NCorp'
   // H사
-  | "HCorp"
+  | 'HCorp'
   // 흑수
-  | "HeishouPack"
+  | 'HeishouPack'
   // 흑수-오
-  | "HeishouPackWuBranch"
+  | 'HeishouPackWuBranch'
   // 흑수-필두
-  | "HeishouPackAdept"
+  | 'HeishouPackAdept'
   // 가씨 가문
-  | "JiaFamily"
+  | 'JiaFamily'
   // 로보토미 지부
-  | "LobotomyCorpBranch"
+  | 'LobotomyCorpBranch'
   // 츠바이 협회
-  | "ZweiAssoc"
+  | 'ZweiAssoc'
   // 워더링 하이츠
-  | "WutheringHeights"
+  | 'WutheringHeights'
   // N사 광신도
-  | "NCorpFanatic"
+  | 'NCorpFanatic'
   // 기계 융화 생명체
-  | "MechanicalAmalgam"
+  | 'MechanicalAmalgam'
   // 멀티크랙 사무소
-  | "MulticrackOffice"
+  | 'MulticrackOffice'
   // 흑수-묘
-  | "HeishouPackMaoBranch"
+  | 'HeishouPackMaoBranch'
   // 시 협회
-  | "ShiAssoc"
+  | 'ShiAssoc'
   // 섕크 협회
-  | "CinqAssoc"
+  | 'CinqAssoc'
   // 중지
-  | "TheMiddle"
+  | 'TheMiddle'
   // T사
-  | "TCorp"
+  | 'TCorp'
   // 라만차랜드
-  | "LaManchaland"
+  | 'LaManchaland'
   // 혈귀
-  | "Bllodfiend"
+  | 'Bllodfiend'
   // 제2권속
-  | "SecondKindred"
+  | 'SecondKindred'
   // 유로지비
-  | "Yurodivy"
+  | 'Yurodivy'
   // 흑운회
-  | "KurokumoClan"
+  | 'KurokumoClan'
   // 뒷골목
-  | "TheBackstreets"
+  | 'TheBackstreets'
   // 료.고.파
-  | "RB"
+  | 'RB'
   // 에드가 가문
-  | "EdgarFamily"
+  | 'EdgarFamily'
   // 장미스패너 공방
-  | "RosespannerWorkshop"
+  | 'RosespannerWorkshop'
   // 데드레밋츠
-  | "DeadRabbits"
+  | 'DeadRabbits'
   // R사
-  | "RCorp"
+  | 'RCorp'
   // 엄지
-  | "TheThumb"
+  | 'TheThumb'
   // 카포
-  | "Capo"
+  | 'Capo'
   // 제3권속
-  | "ThirdKindred"
+  | 'ThirdKindred'
   // 갈고리 사무소
-  | "HookOffice"
+  | 'HookOffice'
   // 송곳니 사냥 사무소
-  | "FanghuntOffice"
+  | 'FanghuntOffice'
   // 콩콩이파
-  | "TingTangGang"
+  | 'TingTangGang'
   // K사
-  | "KCorp"
+  | 'KCorp'
   // 마침표 사무소
-  | "FullStopOffice"
+  | 'FullStopOffice'
   // 외우피 협회
-  | "OufiAssoc"
+  | 'OufiAssoc'
   // 와일드헌트
-  | "WildHunt"
+  | 'WildHunt'
   // 가주 후보
-  | "FamilyHierarchCandidate"
+  | 'FamilyHierarchCandidate'
   // 협력 사무소-외우피
-  | "AssociateOfficeOufi"
+  | 'AssociateOfficeOufi'
   // 정사무소
-  | "JeongsOffice"
+  | 'JeongsOffice'
   // 제뱌찌 협회
-  | "DevyatAssoc"
+  | 'DevyatAssoc'
   // 흑수-사
-  | "HeishouPackSiBranch"
+  | 'HeishouPackSiBranch'
   // 마리아치
-  | "LosMariachis"
+  | 'LosMariachis'
   // 솔다토
-  | "Soldato"
+  | 'Soldato'
   // 흑수-유
-  | "HeishouPackYouBranch"
+  | 'HeishouPackYouBranch'
   // G사
-  | "GCorp"
+  | 'GCorp'
   // 쌍갈고리 새적단
-  | "TwinhookPirates"
+  | 'TwinhookPirates'
   // 밤의 송곳
-  | "NightAwls"
+  | 'NightAwls';
