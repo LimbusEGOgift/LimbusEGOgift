@@ -31,7 +31,7 @@ export class IdentityService {
     const sinnerDir = path.resolve(`identity/${dto.sinner}.json`);
     const identity =
       await this.jsonLoader.readSingleJson<Record<string, string[]>>(sinnerDir);
-    const keyWords: string[] = identity[dto.identity]['키워드'];
+    const keyWords = identity[dto.identity]['키워드'] as string[];
 
     const EGOGiftDir = path.resolve('EGOGift');
     const files =
