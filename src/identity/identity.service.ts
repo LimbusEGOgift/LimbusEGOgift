@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
 import * as path from 'path';
-import { FindEGOGiftDto } from './dto/findEGOGift.dto';
+// import { FindEGOGiftDto } from './dto/findEGOGift.dto';
 
 type KeyMap = Record<string, string[]>;
 
@@ -24,5 +24,5 @@ export class IdentityService {
     return allNames;
   }
 
-  async findEGOGiftForIdentity(dto: FindEGOGiftDto) {}
+  // async findEGOGiftForIdentity(dto: FindEGOGiftDto) {}
 }
