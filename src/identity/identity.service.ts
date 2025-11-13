@@ -11,7 +11,8 @@ export class IdentityService {
 
   async findIdentityList(): Promise<KeyMap> {
     const dir = path.resolve('identity');
-    const files = await this.jsonLoader.readJsonFiles<Record<string, string[]>>(dir);
+    const files =
+      await this.jsonLoader.readJsonFiles<Record<string, string[]>>(dir);
 
     const allNames: KeyMap = {};
     for (const sinner of Object.keys(files)) {
@@ -30,7 +31,7 @@ export class IdentityService {
     const sinnerDir = path.resolve(`identity/${dto.sinner}.json`);
     const identity =
       await this.jsonLoader.readSingleJson<Record<string, string[]>>(sinnerDir);
-    const keyWords = identity[dto.identity]['키워드'];
+    const keyWords: string[] = identity[dto.identity]['키워드'];
 
     const EGOGiftDir = path.resolve('EGOGift');
     const files =
