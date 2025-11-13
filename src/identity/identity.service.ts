@@ -14,17 +14,15 @@ export class IdentityService {
     const files = await this.jsonLoader.readJsonFiles<Record<string, any>>(dir);
 
     const allNames: KeyMap = {};
-    for(const sinner of Object.keys(files)){
-      for(const data of Object.values(files)){
-        const  identities = Object.keys(data);
-        allNames[path.basename(sinner, ".json")] = identities;
+    for (const sinner of Object.keys(files)) {
+      for (const data of Object.values(files)) {
+        const identities = Object.keys(data);
+        allNames[path.basename(sinner, '.json')] = identities;
       }
     }
 
     return allNames;
   }
 
-  async findEGOGiftForIdentity(dto: FindEGOGiftDto){
-    
-  }
+  async findEGOGiftForIdentity(dto: FindEGOGiftDto) {}
 }

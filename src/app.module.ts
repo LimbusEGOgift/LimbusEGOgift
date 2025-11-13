@@ -7,12 +7,7 @@ import { UtilsModule } from './utils/utils.module';
 import { IdentityModule } from './identity/identity.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    HealthModule,
-    UtilsModule,
-    IdentityModule
-  ],
+  imports: [ConfigModule.forRoot(), HealthModule, UtilsModule, IdentityModule],
   controllers: [AppController],
   providers: [AppService],
 })
