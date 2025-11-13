@@ -30,7 +30,7 @@ export class IdentityService {
     const sinnerDir = path.resolve(`identity/${dto.sinner}.json`);
     const identity =
       await this.jsonLoader.readSingleJson<Record<string, any>>(sinnerDir);
-    const keyWords = new Set(identity[dto.identity]['키워드'] as string[]);
+    const keyWords = identity[dto.identity]['키워드'] as string[];
 
     const EGOGiftDir = path.resolve('EGOGift');
     const files =
@@ -41,7 +41,7 @@ export class IdentityService {
       for (const EGOGift of Object.values(files)) {
         for (const data of Object.values(EGOGift)) {
           const condition = data['조건'] as string[];
-          const check = condition.filter((x) => keyWords.has(x));
+          const check = condition.filter((x) => keyWords.includes(x));
           if (check.length)
             allNames[path.basename(category, '.json')] = EGOGift;
         }
