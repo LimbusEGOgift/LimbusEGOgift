@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class FindEGOGiftDto {
+export class FindIdentityByEGOGiftDto {
   @IsNotEmpty()
   @IsString()
   sinner!: string;

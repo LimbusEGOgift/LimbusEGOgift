@@ -5,9 +5,16 @@ import { HealthModule } from './health/health.module';
 import { ConfigModule } from '@nestjs/config';
 import { UtilsModule } from './utils/utils.module';
 import { IdentityModule } from './identity/identity.module';
+import { EgogiftModule } from './EGOGift/egogift.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), HealthModule, UtilsModule, IdentityModule],
+  imports: [
+    ConfigModule.forRoot(),
+    HealthModule,
+    UtilsModule,
+    IdentityModule,
+    EgogiftModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
