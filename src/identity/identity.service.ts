@@ -4,7 +4,16 @@ import { JsonLoaderService } from 'src/utils/json-loader.service';
 import { FindIdentityByEGOGiftDto } from './dto/findIdentityByEGOGift.dto';
 
 type IdentityList = Record<string, string[]>;
-type EGOGiftData = Record<string, any>;
+type EGOGiftDetail = {
+  조건?: string[];
+  [key: string]: unknown;
+};
+type EGOGiftCollection = Record<string, EGOGiftDetail>;
+type IdentityDetail = {
+  키워드?: string[];
+  [key: string]: unknown;
+};
+type IdentityCollection = Record<string, IdentityDetail>;
 
 @Injectable()
 export class IdentityService {
@@ -26,12 +35,10 @@ export class IdentityService {
 
   async findMatchedEGOGifts(
     dto: FindIdentityByEGOGiftDto,
-  ): Promise<Record<string, EGOGiftData>> {
+  ): Promise<Record<string, EGOGiftCollection>> {
     const sinnerFilePath = path.resolve(`identity/${dto.sinner}.json`);
     const identities =
-      await this.jsonLoader.readSingleJson<Record<string, any>>(
-        sinnerFilePath,
-      );
+      await this.jsonLoader.readSingleJson<IdentityCollection>(sinnerFilePath);
 
     const identityDetail = identities[dto.identity];
     if (!identityDetail) {
@@ -41,22 +48,20 @@ export class IdentityService {
     }
 
     const keywords = Array.isArray(identityDetail['키워드'])
-      ? (identityDetail['키워드'] as string[])
+      ? identityDetail['키워드']
       : [];
 
     const giftDir = path.resolve('EGOGift');
     const giftFiles =
-      await this.jsonLoader.readJsonFiles<Record<string, any>>(giftDir);
+      await this.jsonLoader.readJsonFiles<EGOGiftCollection>(giftDir);
 
-    const matchedGifts: Record<string, EGOGiftData> = {};
+    const matchedGifts: Record<string, EGOGiftCollection> = {};
 
     for (const [fileName, gifts] of Object.entries(giftFiles)) {
       const category = path.basename(fileName, path.extname(fileName));
 
       const hasOverlap = Object.values(gifts).some((gift) => {
-        const conditions = Array.isArray(gift['조건'])
-          ? (gift['조건'] as string[])
-          : [];
+        const conditions = Array.isArray(gift['조건']) ? gift['조건'] : [];
         return conditions.some((condition) => keywords.includes(condition));
       });
 

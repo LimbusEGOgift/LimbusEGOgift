@@ -4,8 +4,17 @@ import { JsonLoaderService } from 'src/utils/json-loader.service';
 import { FindEGOGiftByIdentityDto } from './dto/findEGOGiftByIdentity.dto';
 
 type EGOGiftMap = Record<string, string[]>;
-type IdentityData = Record<string, any>;
-type MatchedIdentityMap = Record<string, IdentityData>;
+type EGOGiftDetail = {
+  조건?: string[];
+  [key: string]: unknown;
+};
+type EGOGiftCollection = Record<string, EGOGiftDetail>;
+type IdentityDetail = {
+  키워드?: string[];
+  [key: string]: unknown;
+};
+type IdentityCollection = Record<string, IdentityDetail>;
+type MatchedIdentityMap = Record<string, IdentityCollection>;
 
 @Injectable()
 export class EgogiftService {
@@ -13,8 +22,7 @@ export class EgogiftService {
 
   async findAllEGOGift(): Promise<EGOGiftMap> {
     const dir = path.resolve('EGOGift');
-    const files =
-      await this.jsonLoader.readJsonFiles<Record<string, object>>(dir);
+    const files = await this.jsonLoader.readJsonFiles<EGOGiftCollection>(dir);
 
     const giftsByCategory: EGOGiftMap = {};
 
@@ -31,7 +39,7 @@ export class EgogiftService {
   ): Promise<MatchedIdentityMap> {
     const giftFilePath = path.resolve(`EGOGift/${dto.Category}.json`);
     const giftData =
-      await this.jsonLoader.readSingleJson<Record<string, any>>(giftFilePath);
+      await this.jsonLoader.readSingleJson<EGOGiftCollection>(giftFilePath);
 
     const giftDetail = giftData[dto.EGOGift];
     if (!giftDetail) {
@@ -40,15 +48,13 @@ export class EgogiftService {
       );
     }
 
-    const conditions = Array.isArray(giftDetail['조건'])
-      ? (giftDetail['조건'] as string[])
+    const conditions = Array.isArray(giftDetail?.['조건'])
+      ? giftDetail['조건']
       : [];
 
     const identityDir = path.resolve('identity');
     const sinners =
-      await this.jsonLoader.readJsonFiles<Record<string, IdentityData>>(
-        identityDir,
-      );
+      await this.jsonLoader.readJsonFiles<IdentityCollection>(identityDir);
 
     const matched: MatchedIdentityMap = {};
 
@@ -57,7 +63,7 @@ export class EgogiftService {
 
       for (const [identityName, identityDetail] of Object.entries(identities)) {
         const keywords = Array.isArray(identityDetail['키워드'])
-          ? (identityDetail['키워드'] as string[])
+          ? identityDetail['키워드']
           : [];
         const hasOverlap = keywords.some((kw) => conditions.includes(kw));
 
