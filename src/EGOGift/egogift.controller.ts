@@ -12,22 +12,24 @@ export class EgogiftController {
   constructor(private readonly egogiftService: EgogiftService) {}
 
   @ApiDoc({
-    summary: "모든 EGOGift 조회",
-    successType: String
+    summary: '모든 EGOGift 조회',
+    successType: String,
   })
   @Get()
-  async findAll(): Promise<ControllerResponse<Record<string, EGOGiftCollection>>> {
+  async findAll(): Promise<
+    ControllerResponse<Record<string, EGOGiftCollection>>
+  > {
     const res = await this.egogiftService.findAllEGOGift();
     return ControllerResponse.success(res);
   }
 
   @ApiDoc({
-    summary: "EGOGift 조건에 맞는 인격 조회",
-    successType: String
+    summary: 'EGOGift 조건에 맞는 인격 조회',
+    successType: String,
   })
   @Post()
   async findIdentities(
-    @Body() dto: FindIdentityByConditionDto
+    @Body() dto: FindIdentityByConditionDto,
   ): Promise<ControllerResponse<Record<string, string[]>>> {
     const res = await this.egogiftService.findMatchedIdentities(dto);
     return ControllerResponse.success(res);

@@ -1,18 +1,18 @@
-import { ControllerResponse } from "../response/controller.response";
+import { ControllerResponse } from '../response/controller.response';
 import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
   Type,
   applyDecorators,
-} from "@nestjs/common";
+} from '@nestjs/common';
 import {
   ApiExtraModels,
   ApiOkResponse,
   ApiOperation,
   ApiResponse,
   getSchemaPath,
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
 
 type SwaggerPrimitive =
   | StringConstructor
@@ -53,8 +53,8 @@ export const ApiDoc = <TModel extends ApiDocSuccessType>(
 
   // 기본 에러 응답들 추가
   const defaultErrorResponses: ErrorResponseSpec[] = [
-    { status: HttpStatus.BAD_REQUEST, description: "잘못된 요청" },
-    { status: HttpStatus.INTERNAL_SERVER_ERROR, description: "서버 에러" },
+    { status: HttpStatus.BAD_REQUEST, description: '잘못된 요청' },
+    { status: HttpStatus.INTERNAL_SERVER_ERROR, description: '서버 에러' },
   ];
 
   const allErrorResponses = [...defaultErrorResponses, ...errorResponses];
@@ -78,7 +78,7 @@ export const ApiDoc = <TModel extends ApiDocSuccessType>(
       if (isArray) {
         // 배열 타입 처리
         dataSchema = {
-          type: "array",
+          type: 'array',
           items: isItemPrimitive
             ? { type: primitiveToSwaggerType(itemType as SwaggerPrimitive) }
             : { $ref: getSchemaPath(itemType as Type<any>) },
@@ -104,7 +104,7 @@ export const ApiDoc = <TModel extends ApiDocSuccessType>(
       ),
       ApiOkResponse({
         schema: successSchema,
-        description: "성공 응답",
+        description: '성공 응답',
       }),
       HttpCode(HttpStatus.OK),
     );
@@ -119,9 +119,9 @@ export const ApiDoc = <TModel extends ApiDocSuccessType>(
         schema: {
           allOf: [{ $ref: getSchemaPath(ControllerResponse) }],
           properties: {
-            data: { type: "object", nullable: false },
-            message: { type: "string", example: errorDescription },
-            status: { type: "number", example: status },
+            data: { type: 'object', nullable: false },
+            message: { type: 'string', example: errorDescription },
+            status: { type: 'number', example: status },
           },
         },
       }),
@@ -164,14 +164,14 @@ export const ApiResponseType = <
 
 function primitiveToSwaggerType(
   type: SwaggerPrimitive,
-): "string" | "number" | "boolean" {
+): 'string' | 'number' | 'boolean' {
   switch (type) {
     case String:
-      return "string";
+      return 'string';
     case Number:
-      return "number";
+      return 'number';
     case Boolean:
-      return "boolean";
+      return 'boolean';
     default:
       throw new InternalServerErrorException(
         `Unsupported primitive type: ${type}`,

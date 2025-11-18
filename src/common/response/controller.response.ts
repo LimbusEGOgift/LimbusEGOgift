@@ -1,6 +1,5 @@
-import { HttpStatus } from "@nestjs/common";
-import { ApiProperty } from "@nestjs/swagger";
-
+import { HttpStatus } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ControllerResponse<T> {
   constructor(data: T, message: string, status: HttpStatus) {
@@ -10,29 +9,29 @@ export class ControllerResponse<T> {
   }
 
   @ApiProperty({
-    description: "데이터",
+    description: '데이터',
   })
   public readonly data: T;
 
   @ApiProperty({
-    description: "메시지",
-    example: "success",
+    description: '메시지',
+    example: 'success',
   })
   public readonly message: string;
 
   @ApiProperty({
-    description: "상태 코드",
+    description: '상태 코드',
     example: HttpStatus.OK,
   })
   public readonly status: HttpStatus;
 
-  static success<T>(data: T, message = "success"): ControllerResponse<T> {
+  static success<T>(data: T, message = 'success'): ControllerResponse<T> {
     return new ControllerResponse(data, message, HttpStatus.OK);
   }
 
   static error<T>(
     data: T,
-    message = "error",
+    message = 'error',
     status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR,
   ): ControllerResponse<T> {
     return new ControllerResponse(data, message, status);

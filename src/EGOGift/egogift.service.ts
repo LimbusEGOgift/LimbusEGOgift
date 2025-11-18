@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
 import { FindIdentityByConditionDto } from './dto/findIdentityByCondition.dto';
-import { EGOGiftCollection, IdentityCollection } from 'src/common/type/identity-EGOGift.type';
+import {
+  EGOGiftCollection,
+  IdentityCollection,
+} from 'src/common/type/identity-EGOGift.type';
 
 @Injectable()
 export class EgogiftService {

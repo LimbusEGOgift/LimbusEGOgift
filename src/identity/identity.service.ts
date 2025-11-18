@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
 import { FindEGOGiftByKeywordDto } from './dto/findEGOGiftByKeyword.dto';
-import { EGOGiftCollection, IdentityCollection } from 'src/common/type/identity-EGOGift.type';
+import {
+  EGOGiftCollection,
+  IdentityCollection,
+} from 'src/common/type/identity-EGOGift.type';
 
 @Injectable()
 export class IdentityService {
@@ -10,8 +13,7 @@ export class IdentityService {
 
   async findAllIdentity(): Promise<Record<string, IdentityCollection>> {
     const dir = path.resolve('identity');
-    const files =
-      await this.jsonLoader.readJsonFiles<IdentityCollection>(dir);
+    const files = await this.jsonLoader.readJsonFiles<IdentityCollection>(dir);
 
     const identityBySinner: Record<string, IdentityCollection> = {};
     for (const [fileName, identityDetail] of Object.entries(files)) {
