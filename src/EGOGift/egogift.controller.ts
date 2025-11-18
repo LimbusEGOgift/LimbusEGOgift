@@ -8,19 +8,17 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 export class EgogiftController {
   constructor(private readonly egogiftService: EgogiftService) {}
 
-  @ApiOperation({ summary: "모든 EGOGift 조회" })
-  @ApiOkResponse({ description: "조회 완료" })
+  @ApiOperation({ summary: '모든 EGOGift 조회' })
+  @ApiOkResponse({ description: '조회 완료' })
   @Get()
-  findAll(){
+  findAll() {
     return this.egogiftService.findAllEGOGift();
   }
 
-  @ApiOperation({ summary: "인격 KeyWord에 맞는 EGOGift 조회" })
-  @ApiOkResponse({ description: "조회 완료" })
+  @ApiOperation({ summary: '인격 KeyWord에 맞는 EGOGift 조회' })
+  @ApiOkResponse({ description: '조회 완료' })
   @Post()
-  findIdentities(
-    @Body() dto: FindIdentityByConditionDto,
-  ) {
+  findIdentities(@Body() dto: FindIdentityByConditionDto) {
     return this.egogiftService.findMatchedIdentities(dto);
   }
 }
