@@ -1,37 +1,26 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { IdentityService } from './identity.service';
 import { FindEGOGiftByKeywordDto } from './dto/findEGOGiftByKeyword.dto';
-import { ApiTags } from '@nestjs/swagger';
-import { ApiDoc } from 'src/common/swagger/envelope';
-import { ControllerResponse } from 'src/common/response/controller.response';
-import { IdentityCollection } from 'src/common/type/identity-EGOGift.type';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('identity')
 @Controller({ path: 'identity' })
 export class IdentityController {
   constructor(private readonly app: IdentityService) {}
 
-  @ApiDoc({
-    summary: '모든 인격 조회',
-    successType: String,
-  })
+  @ApiOperation({ summary: "모든 인격 조회" })
+  @ApiOkResponse({ description: "조회 완료" })
   @Get()
-  async findAll(): Promise<
-    ControllerResponse<Record<string, IdentityCollection>>
-  > {
-    const res = await this.app.findAllIdentity();
-    return ControllerResponse.success(res);
+  findAll() {
+    return this.app.findAllIdentity();
   }
 
-  @ApiDoc({
-    summary: '인격 키워드에 맞는 EGOGift 조회',
-    successType: String,
-  })
+  @ApiOperation({ summary: "EGOGift Condition에 맞는 인격 조회" })
+  @ApiOkResponse({ description: "조회 완료" })
   @Post()
-  async findEGOGifts(
+  findEGOGifts(
     @Body() dto: FindEGOGiftByKeywordDto,
-  ): Promise<ControllerResponse<Record<string, string[]>>> {
-    const res = await this.app.findMatchedEGOGifts(dto);
-    return ControllerResponse.success(res);
+  ) {
+    return this.app.findMatchedEGOGifts(dto);
   }
 }
