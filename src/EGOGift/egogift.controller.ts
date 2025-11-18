@@ -1,18 +1,24 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { EgogiftService } from './egogift.service';
-import { FindEGOGiftByIdentityDto } from './dto/findEGOGiftByIdentity.dto';
+import { FindIdentityByConditionDto } from './dto/findIdentityByCondition.dto';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller('EGOGift')
+@ApiTags('EGOGift')
+@Controller({ path: 'EGOGift' })
 export class EgogiftController {
   constructor(private readonly egogiftService: EgogiftService) {}
 
+  @ApiOperation({ summary: '모든 EGOGift 조회' })
+  @ApiOkResponse({ description: '조회 완료' })
   @Get()
   findAll() {
     return this.egogiftService.findAllEGOGift();
   }
 
+  @ApiOperation({ summary: '인격 KeyWord에 맞는 EGOGift 조회' })
+  @ApiOkResponse({ description: '조회 완료' })
   @Post()
-  findIdentities(@Body() dto: FindEGOGiftByIdentityDto) {
+  findIdentities(@Body() dto: FindIdentityByConditionDto) {
     return this.egogiftService.findMatchedIdentities(dto);
   }
 }
