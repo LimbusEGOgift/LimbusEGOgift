@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
-import { FindIdentityByConditionDto } from './dto/findIdentityByCondition.dto';
+import { FindIdentityByEGOGiftDto } from './dto/findIdentityByCondition.dto';
 import {
   EGOGiftCollection,
   IdentityCollection,
 } from 'src/common/type/identity-EGOGift.type';
+
+const comparableKeys = [
+  'Trait',
+  'Keyword',
+  'Skill1',
+  'Skill2',
+  'Skill3',
+] as const;
+type ComparableKey = (typeof comparableKeys)[number];
 
 @Injectable()
 export class EgogiftService {
@@ -26,9 +35,18 @@ export class EgogiftService {
   }
 
   async findMatchedIdentities(
-    dto: FindIdentityByConditionDto,
+    dto: FindIdentityByEGOGiftDto,
   ): Promise<Record<string, string[]>> {
-    const conditions = Array.isArray(dto.Condition) ? dto.Condition : [];
+    const comparableFields = comparableKeys
+      .map((key) => {
+        const value = dto[key];
+        return Array.isArray(value) && value.length > 0 ? [key, value] : null;
+      })
+      .filter((entry): entry is [ComparableKey, string[]] => entry !== null);
+
+    if (comparableFields.length === 0) {
+      return {};
+    }
 
     const identityDir = path.resolve('identity');
     const sinners =
@@ -41,18 +59,24 @@ export class EgogiftService {
       const identityNames: string[] = [];
 
       for (const [identityName, identityDetail] of Object.entries(identities)) {
-        const keywords = Array.isArray(identityDetail['키워드'])
-          ? identityDetail['키워드']
-          : [];
-        const hasOverlap = keywords.some((kw) => conditions.includes(kw));
+        const hasOverlap = comparableFields.some(([key, values]) => {
+          const identityValues = Array.isArray(identityDetail[key])
+            ? identityDetail[key]
+            : [];
+          return identityValues.some((identityValue) =>
+            values.includes(identityValue),
+          );
+        });
 
         if (hasOverlap) {
           identityNames.push(identityName);
         }
       }
 
-      if (identityNames.length > 0) {
-        matched[sinner] = identityNames;
+      const uniqueIdentityNames = Array.from(new Set(identityNames));
+
+      if (uniqueIdentityNames.length > 0) {
+        matched[sinner] = uniqueIdentityNames;
       }
     }
 

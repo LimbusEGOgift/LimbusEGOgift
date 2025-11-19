@@ -1,11 +1,22 @@
 type EGOGiftDetail = {
-  조건?: string[];
-  [key: string]: unknown;
+  Rate: number;
+  Trait: string[];
+  Keyword: string[];
+  Skill1: string[];
+  Skill2: string[];
+  Skill3: string[];
+  Formation: number[];
+  Recipe: string[];
+  ThemePack: string[];
+  Effect: string;
 };
 export type EGOGiftCollection = Record<string, EGOGiftDetail>;
 
 type IdentityDetail = {
-  키워드?: string[];
-  [key: string]: unknown;
+  Trait: string[];
+  Keyword: string[];
+  Skill1: string[];
+  Skill2: string[];
+  Skill3: string[];
 };
 export type IdentityCollection = Record<string, IdentityDetail>;

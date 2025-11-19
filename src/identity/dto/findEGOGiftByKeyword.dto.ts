@@ -1,16 +1,69 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ArrayNotEmpty, IsArray, IsString } from 'class-validator';
+import { IsArray, IsInt, IsString } from 'class-validator';
 
-export class FindEGOGiftByKeywordDto {
+export class FindEGOGiftByIdentityDto {
+  @ApiProperty({
+    description: '인격의 특성 키워드',
+    example: '["LCB"]',
+  })
+  @IsArray()
+  @IsString({
+    message: '특성 키워드는 문자열 배열이여야 합니다.',
+    each: true,
+  })
+  Trait?: string[];
+
   @ApiProperty({
     description: '인격의 키워드',
     example: '["범용"]',
   })
   @IsArray()
-  @ArrayNotEmpty()
   @IsString({
-    message: '키워드는 문자열이여야 합니다.',
+    message: '키워드는 문자열 배열이여야 합니다.',
     each: true,
   })
-  KeyWord!: string[];
+  Keyword?: string[];
+
+  @ApiProperty({
+    description: '인격 스킬1의 특성',
+    example: '["참격"]',
+  })
+  @IsArray()
+  @IsString({
+    message: '스킬 특성는 문자열 배열이여야 합니다.',
+    each: true,
+  })
+  Skill1?: string[];
+
+  @ApiProperty({
+    description: '인격 스킬2의 특성',
+    example: '["관통"]',
+  })
+  @IsArray()
+  @IsString({
+    message: '스킬 특성는 문자열 배열이여야 합니다.',
+    each: true,
+  })
+  Skill2?: string[];
+
+  @ApiProperty({
+    description: '인격 스킬3의 특성',
+    example: '["타격"]',
+  })
+  @IsArray()
+  @IsString({
+    message: '스킬 특성는 문자열 배열이여야 합니다.',
+    each: true,
+  })
+  Skill3?: string[];
+
+  @ApiProperty({
+    description: '인격의 편성 번호',
+    example: 1,
+    required: false,
+  })
+  @IsInt({
+    message: '편성은 숫자이여야 합니다.',
+  })
+  Formation?: number;
 }
