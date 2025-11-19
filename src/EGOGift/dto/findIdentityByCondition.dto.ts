@@ -62,7 +62,7 @@ export class FindIdentityByEGOGiftDto {
     example: '1',
   })
   @IsInt({
-    message: '편성은 숫자이여야 합니다.'
+    message: '편성은 숫자이여야 합니다.',
   })
   Formation?: number;
 }

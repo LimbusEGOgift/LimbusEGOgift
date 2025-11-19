@@ -7,7 +7,13 @@ import {
   IdentityCollection,
 } from 'src/common/type/identity-EGOGift.type';
 
-const comparableKeys = ['Trait', 'Keyword', 'Skill1', 'Skill2', 'Skill3'] as const;
+const comparableKeys = [
+  'Trait',
+  'Keyword',
+  'Skill1',
+  'Skill2',
+  'Skill3',
+] as const;
 type ComparableKey = (typeof comparableKeys)[number];
 
 @Injectable()
@@ -36,9 +42,7 @@ export class EgogiftService {
         const value = dto[key];
         return Array.isArray(value) && value.length > 0 ? [key, value] : null;
       })
-      .filter(
-        (entry): entry is [ComparableKey, string[]] => entry !== null,
-      );
+      .filter((entry): entry is [ComparableKey, string[]] => entry !== null);
 
     if (comparableFields.length === 0) {
       return {};

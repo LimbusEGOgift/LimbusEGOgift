@@ -7,7 +7,13 @@ import {
   IdentityCollection,
 } from 'src/common/type/identity-EGOGift.type';
 
-const comparableKeys = ['Trait', 'Keyword', 'Skill1', 'Skill2', 'Skill3'] as const;
+const comparableKeys = [
+  'Trait',
+  'Keyword',
+  'Skill1',
+  'Skill2',
+  'Skill3',
+] as const;
 type ComparableKey = (typeof comparableKeys)[number];
 
 @Injectable()
@@ -35,9 +41,7 @@ export class IdentityService {
         const value = dto[key];
         return Array.isArray(value) && value.length > 0 ? [key, value] : null;
       })
-      .filter(
-        (entry): entry is [ComparableKey, string[]] => entry !== null,
-      );
+      .filter((entry): entry is [ComparableKey, string[]] => entry !== null);
 
     const formationCriterion =
       typeof dto.Formation === 'number' ? dto.Formation : null;
@@ -61,9 +65,7 @@ export class IdentityService {
         const hasComparableOverlap =
           comparableFields.length > 0
             ? comparableFields.some(([key, values]) => {
-                const giftValues = Array.isArray(gift[key])
-                  ? gift[key]
-                  : [];
+                const giftValues = Array.isArray(gift[key]) ? gift[key] : [];
                 return giftValues.some((giftValue) =>
                   values.includes(giftValue),
                 );
