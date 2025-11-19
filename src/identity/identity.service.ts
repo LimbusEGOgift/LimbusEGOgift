@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
-import { FindEGOGiftByKeywordDto } from './dto/findEGOGiftByKeyword.dto';
+import { FindEGOGiftByIdentityDto } from './dto/findEGOGiftByKeyword.dto';
 import {
   EGOGiftCollection,
   IdentityCollection,
 } from 'src/common/type/identity-EGOGift.type';
+
+const comparableKeys = ['Trait', 'Keyword', 'Skill1', 'Skill2', 'Skill3'] as const;
+type ComparableKey = (typeof comparableKeys)[number];
 
 @Injectable()
 export class IdentityService {
@@ -25,9 +28,23 @@ export class IdentityService {
   }
 
   async findMatchedEGOGifts(
-    dto: FindEGOGiftByKeywordDto,
+    dto: FindEGOGiftByIdentityDto,
   ): Promise<Record<string, string[]>> {
-    const keywords = Array.isArray(dto.KeyWord) ? dto.KeyWord : [];
+    const comparableFields = comparableKeys
+      .map((key) => {
+        const value = dto[key];
+        return Array.isArray(value) && value.length > 0 ? [key, value] : null;
+      })
+      .filter(
+        (entry): entry is [ComparableKey, string[]] => entry !== null,
+      );
+
+    const formationCriterion =
+      typeof dto.Formation === 'number' ? dto.Formation : null;
+
+    if (comparableFields.length === 0 && formationCriterion === null) {
+      return {};
+    }
 
     const giftDir = path.resolve('EGOGift');
     const giftFiles =
@@ -41,18 +58,43 @@ export class IdentityService {
       const matchedGiftNames: string[] = [];
 
       for (const [giftName, gift] of Object.entries(gifts)) {
-        const conditions = Array.isArray(gift['조건']) ? gift['조건'] : [];
-        const hasOverlap = conditions.some((condition) =>
-          keywords.includes(condition),
-        );
+        const hasComparableOverlap =
+          comparableFields.length > 0
+            ? comparableFields.some(([key, values]) => {
+                const giftValues = Array.isArray(gift[key])
+                  ? gift[key]
+                  : [];
+                return giftValues.some((giftValue) =>
+                  values.includes(giftValue),
+                );
+              })
+            : true;
 
-        if (hasOverlap) {
-          matchedGiftNames.push(giftName);
+        if (!hasComparableOverlap) {
+          continue;
         }
+
+        let matchesFormation = true;
+        if (formationCriterion !== null) {
+          const giftFormation = Array.isArray(gift.Formation)
+            ? gift.Formation
+            : [];
+          matchesFormation =
+            giftFormation.length === 0 ||
+            giftFormation.includes(formationCriterion);
+        }
+
+        if (!matchesFormation) {
+          continue;
+        }
+
+        matchedGiftNames.push(giftName);
       }
 
-      if (matchedGiftNames.length > 0) {
-        matchedGifts[category] = matchedGiftNames;
+      const uniqueMatchedGiftNames = Array.from(new Set(matchedGiftNames));
+
+      if (uniqueMatchedGiftNames.length > 0) {
+        matchedGifts[category] = uniqueMatchedGiftNames;
       }
     }
 

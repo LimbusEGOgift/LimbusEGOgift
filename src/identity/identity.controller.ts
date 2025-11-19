@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { IdentityService } from './identity.service';
-import { FindEGOGiftByKeywordDto } from './dto/findEGOGiftByKeyword.dto';
+import { FindEGOGiftByIdentityDto } from './dto/findEGOGiftByKeyword.dto';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('identity')
@@ -15,10 +15,10 @@ export class IdentityController {
     return this.app.findAllIdentity();
   }
 
-  @ApiOperation({ summary: 'EGOGift Condition에 맞는 인격 조회' })
+  @ApiOperation({ summary: 'EGOGift에 맞는 인격 조회' })
   @ApiOkResponse({ description: '조회 완료' })
   @Post()
-  findEGOGifts(@Body() dto: FindEGOGiftByKeywordDto) {
+  findEGOGifts(@Body() dto: FindEGOGiftByIdentityDto) {
     return this.app.findMatchedEGOGifts(dto);
   }
 }
