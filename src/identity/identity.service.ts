@@ -110,7 +110,7 @@ export class IdentityService {
         matchedGiftNames.push(giftName);
       }
 
-      // 조건에 맞는 gift가 있는 가테고리라면 답변에 추가
+      // 조건에 맞는 gift가 있는 카테고리라면 답변에 추가
       if (matchedGiftNames.length > 0) {
         matchedGifts[category] = matchedGiftNames;
       }
