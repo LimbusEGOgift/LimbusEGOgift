@@ -15,6 +15,7 @@ const comparableKeys = [
   'Skill3',
 ] as const;
 type ComparableKey = (typeof comparableKeys)[number];
+type EGOGiftDetail = EGOGiftCollection[keyof EGOGiftCollection];
 
 @Injectable()
 export class IdentityService {
@@ -35,7 +36,8 @@ export class IdentityService {
 
   async findMatchedEGOGifts(
     dto: FindEGOGiftByIdentityDto,
-  ): Promise<Record<string, string[]>> {
+  ): Promise<Record<string, EGOGiftCollection>> {
+    // DTO에서 전달된 비교 대상(특성, 키워드, 스킬)만 추출
     const comparableFields = comparableKeys
       .map((key) => {
         const value = dto[key];
@@ -46,22 +48,53 @@ export class IdentityService {
     const formationCriterion =
       typeof dto.Formation === 'number' ? dto.Formation : null;
 
-    if (comparableFields.length === 0 && formationCriterion === null) {
+    if (formationCriterion === null || comparableFields.length === 0) {
       return {};
     }
+
+    // 입력된 조건과 교집합이 발생한 요소에 "*"을 붙여 표시
+    const criteriaByKey = new Map<ComparableKey, string[]>(comparableFields);
+    const highlightMatches = (
+      values: string[] | undefined,
+      key: ComparableKey,
+    ): string[] => {
+      const source = Array.isArray(values) ? values : [];
+      const criteria = criteriaByKey.get(key);
+
+      if (!criteria || criteria.length === 0) {
+        return [...source];
+      }
+
+      return source.map((value) =>
+        criteria.includes(value) ? `${value}*` : value,
+      );
+    };
 
     const giftDir = path.resolve('EGOGift');
     const giftFiles =
       await this.jsonLoader.readJsonFiles<EGOGiftCollection>(giftDir);
 
-    const matchedGifts: Record<string, string[]> = {};
+    const matchedGifts: Record<string, EGOGiftCollection> = {};
 
     for (const [fileName, gifts] of Object.entries(giftFiles)) {
       const category = path.basename(fileName, path.extname(fileName));
 
-      const matchedGiftNames: string[] = [];
+      const matchedGiftDetails: EGOGiftCollection = {};
 
       for (const [giftName, gift] of Object.entries(gifts)) {
+        // 편성 정보(Formation)은 교집합이 있거나 빈 배열이여야 함
+        const giftFormation = Array.isArray(gift.Formation)
+          ? gift.Formation
+          : [];
+        const matchesFormation =
+          giftFormation.length === 0 ||
+          giftFormation.includes(formationCriterion);
+
+        if (!matchesFormation) {
+          continue;
+        }
+
+        // 편성 정보(Formation)을 제외한 나머지 조건에 교집합이 발생하는지 확인 -> 교집합이 생겨야 통과
         const hasComparableOverlap =
           comparableFields.length > 0
             ? comparableFields.some(([key, values]) => {
@@ -76,27 +109,25 @@ export class IdentityService {
           continue;
         }
 
-        let matchesFormation = true;
-        if (formationCriterion !== null) {
-          const giftFormation = Array.isArray(gift.Formation)
-            ? gift.Formation
-            : [];
-          matchesFormation =
-            giftFormation.length === 0 ||
-            giftFormation.includes(formationCriterion);
-        }
+        // 교집합 요소에 '*'를 달아 상세 정보와 함께 저장
+        const highlightedGift: EGOGiftDetail = {
+          ...gift,
+          Trait: highlightMatches(gift.Trait, 'Trait'),
+          Keyword: highlightMatches(gift.Keyword, 'Keyword'),
+          Skill1: highlightMatches(gift.Skill1, 'Skill1'),
+          Skill2: highlightMatches(gift.Skill2, 'Skill2'),
+          Skill3: highlightMatches(gift.Skill3, 'Skill3'),
+          Formation: [...giftFormation],
+          Recipe: Array.isArray(gift.Recipe) ? [...gift.Recipe] : [],
+          ThemePack: Array.isArray(gift.ThemePack) ? [...gift.ThemePack] : [],
+          Effect: gift.Effect,
+        };
 
-        if (!matchesFormation) {
-          continue;
-        }
-
-        matchedGiftNames.push(giftName);
+        matchedGiftDetails[giftName] = highlightedGift;
       }
 
-      const uniqueMatchedGiftNames = Array.from(new Set(matchedGiftNames));
-
-      if (uniqueMatchedGiftNames.length > 0) {
-        matchedGifts[category] = uniqueMatchedGiftNames;
+      if (Object.keys(matchedGiftDetails).length > 0) {
+        matchedGifts[category] = matchedGiftDetails;
       }
     }
 
