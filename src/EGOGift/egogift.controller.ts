@@ -5,7 +5,7 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiTags('EGOGift')
 @Controller({ path: 'EGOGift' })
 export class EgogiftController {
-  constructor(private readonly egogiftService: EgogiftService) {}
+  constructor(private readonly egogiftService: EgogiftService) { }
 
   @ApiOperation({ summary: '모든 EGOGift 조회' })
   @ApiOkResponse({ description: '조회 완료' })
