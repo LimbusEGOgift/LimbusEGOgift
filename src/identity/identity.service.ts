@@ -21,11 +21,14 @@ type EGOGiftDetail = EGOGiftCollection[keyof EGOGiftCollection];
 export class IdentityService {
   constructor(private readonly jsonLoader: JsonLoaderService) {}
 
+  // 모든 인격 정보들을 반환
   async findAllIdentity(): Promise<Record<string, IdentityCollection>> {
+    // 모든 인격 파일(.json)을 로드
     const dir = path.resolve('identity');
     const files = await this.jsonLoader.readJsonFiles<IdentityCollection>(dir);
 
     const identityBySinner: Record<string, IdentityCollection> = {};
+    // 파일을 수감자 이름과 인격 정보로 나누어 {"<수감자 이름>" : {<인격 정보>}} 형태로 반환
     for (const [fileName, identityDetail] of Object.entries(files)) {
       const sinner = path.basename(fileName, path.extname(fileName));
       identityBySinner[sinner] = identityDetail;
@@ -34,6 +37,10 @@ export class IdentityService {
     return identityBySinner;
   }
 
+  // 입력된 조건(dto -> 인격(들)의 조건)과 교집합이 하나라도 발생하는 EGOGift들을 반환
+  // 편성 정보는 교집합이 생기거나 EGOGift의 조건에 편성 정보가 빈 배열이여야 함
+  // 편성 정보에 교집합이 생기더라도 나머지 조건에 교집합이 생기지 않는다면 반환하지 않음
+  // 조건을 만족한다면 교집합이 생기는 EGOGift의 조건 맨 뒤에 "*"을 붙여 표시
   async findMatchedEGOGifts(
     dto: FindEGOGiftByIdentityDto,
   ): Promise<Record<string, EGOGiftCollection>> {
