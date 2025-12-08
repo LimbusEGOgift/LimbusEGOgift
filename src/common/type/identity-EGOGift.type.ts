@@ -5,7 +5,7 @@ type EGOGiftDetail = {
   Skill1: string[];
   Skill2: string[];
   Skill3: string[];
-  Formation: number[];
+  Formation: string[];
   Recipe: string[];
   ThemePack: string[];
   Effect: string;

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class FindEGOGiftByIdentityDto {
   @ApiProperty({
@@ -64,11 +64,11 @@ export class FindEGOGiftByIdentityDto {
 
   @ApiProperty({
     description: '인격의 편성 번호',
-    example: 1,
+    example: "1",
   })
   @IsNotEmpty()
-  @IsInt({
-    message: '편성은 숫자이여야 합니다.',
+  @IsString({
+    message: '편성은 문자열이여야 합니다.',
   })
-  Formation!: number;
+  Formation!: string;
 }

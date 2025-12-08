@@ -19,7 +19,7 @@ type EGOGiftDetail = EGOGiftCollection[keyof EGOGiftCollection];
 
 @Injectable()
 export class IdentityService {
-  constructor(private readonly jsonLoader: JsonLoaderService) { }
+  constructor(private readonly jsonLoader: JsonLoaderService) {}
 
   // 모든 인격 정보들을 반환
   async findAllIdentity(): Promise<Record<string, IdentityCollection>> {
@@ -57,7 +57,7 @@ export class IdentityService {
 
     // 편성 정보 저장
     const formationCriterion =
-      typeof dto.Formation === 'number' ? dto.Formation : null;
+      typeof dto.Formation === 'string' ? dto.Formation : null;
 
     if (formationCriterion === null || comparableFields.length === 0) {
       return {};
@@ -111,11 +111,11 @@ export class IdentityService {
         const hasComparableOverlap =
           comparableFields.length > 0
             ? comparableFields.some(([key, values]) => {
-              const giftValues = Array.isArray(gift[key]) ? gift[key] : [];
-              return giftValues.some((giftValue) =>
-                values.includes(giftValue),
-              );
-            })
+                const giftValues = Array.isArray(gift[key]) ? gift[key] : [];
+                return giftValues.some((giftValue) =>
+                  values.includes(giftValue),
+                );
+              })
             : true;
 
         // 교집합이 없다면 continue
