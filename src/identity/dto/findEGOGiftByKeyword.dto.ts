@@ -64,7 +64,7 @@ export class FindEGOGiftByIdentityDto {
 
   @ApiProperty({
     description: '인격의 편성 번호',
-    example: "1",
+    example: '1',
   })
   @IsNotEmpty()
   @IsString({
