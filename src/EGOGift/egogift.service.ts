@@ -2,13 +2,10 @@ import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
 import { EGOGiftCollection } from 'src/common/type/identity-EGOGift.type';
-import {
-  EGOGiftCollection
-} from 'src/common/type/identity-EGOGift.type';
 
 @Injectable()
 export class EgogiftService {
-  constructor(private readonly jsonLoader: JsonLoaderService) { }
+  constructor(private readonly jsonLoader: JsonLoaderService) {}
 
   // 모든 EGOGift의 정보를 반환
   async findAllEGOGift(): Promise<Record<string, EGOGiftCollection>> {

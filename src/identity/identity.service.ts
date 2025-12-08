@@ -23,9 +23,6 @@ export class IdentityService {
 
   // 모든 인격 정보들을 반환
   async findAllIdentity(): Promise<Record<string, IdentityCollection>> {
-    // 모든 인격 파일(.json)을 로드
-  // 모든 인격 반환
-  async findAllIdentity(): Promise<Record<string, IdentityCollection>> {
     // identity 폴더에 있는 모든 json 파일을 읽어옴
     const dir = path.resolve('identity');
     const files = await this.jsonLoader.readJsonFiles<IdentityCollection>(dir);
@@ -45,15 +42,11 @@ export class IdentityService {
   // 편성 정보는 교집합이 생기거나 EGOGift의 조건에 편성 정보가 빈 배열이여야 함
   // 편성 정보에 교집합이 생기더라도 나머지 조건에 교집합이 생기지 않는다면 반환하지 않음
   // 조건을 만족한다면 교집합이 생기는 EGOGift의 조건 맨 뒤에 "*"을 붙여 표시
-  async findMatchedEGOGifts(
-    dto: FindEGOGiftByIdentityDto,
-  ): Promise<Record<string, EGOGiftCollection>> {
-    // DTO에서 전달된 비교 대상(특성, 키워드, 스킬)만 추출
   // 받은 조건(FileEGOGiftByIdentityDto)와 교집합이 하나라도 생기는 EGOGift를 반환
   // 단, 교집합 비교 시 같은 이름 끼리 비교(EX: keyword <-> keyword, skill1 <-> skill1)
   async findMatchedEGOGifts(
     dto: FindEGOGiftByIdentityDto,
-  ): Promise<Record<string, string[]>> {
+  ): Promise<Record<string, EGOGiftCollection>> {
     // 들어온 조건들을 map으로 묶어 저장
     const comparableFields = comparableKeys
       .map((key) => {
@@ -69,7 +62,7 @@ export class IdentityService {
     if (formationCriterion === null || comparableFields.length === 0) {
       return {};
     }
-    // 입력된 조건과 교집합이 발생한 요소에 "*"을 붙여 표시
+    // 입력된 조건과 교집합이 발생한 요소에 "*"을 붙여 표시하는 헬퍼
     const criteriaByKey = new Map<ComparableKey, string[]>(comparableFields);
     const highlightMatches = (
       values: string[] | undefined,
@@ -149,31 +142,6 @@ export class IdentityService {
 
       if (Object.keys(matchedGiftDetails).length > 0) {
         matchedGifts[category] = matchedGiftDetails;
-        // 편성 정보 확인
-        // gift의 편성 정보는 받은 편성 정보를 포함하거나, 빈 배열이여야 함
-        // 즉, 교집합이 만들어 지거나 gift의 Formation 조건이 비어 있어야 함
-        let matchesFormation = true;
-        if (formationCriterion !== null) {
-          const giftFormation = Array.isArray(gift.Formation)
-            ? gift.Formation
-            : [];
-          matchesFormation =
-            giftFormation.length === 0 ||
-            giftFormation.includes(formationCriterion);
-        }
-
-        // 조건에 맞지 않으면 continue
-        if (!matchesFormation) {
-          continue;
-        }
-
-        // 조건에 전부 부합한다면 giftname만 반환 객체에 추가
-        matchedGiftNames.push(giftName);
-      }
-
-      // 조건에 맞는 gift가 있는 카테고리라면 답변에 추가
-      if (matchedGiftNames.length > 0) {
-        matchedGifts[category] = matchedGiftNames;
       }
     }
 
