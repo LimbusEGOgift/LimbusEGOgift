@@ -1,7 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import { JsonLoaderService } from 'src/utils/json-loader.service';
-import { EGOGiftCollection } from 'src/common/type/identity-EGOGift.type';
+
+type EGOGiftDetail = {
+  Rate: number;
+  Trait: string[];
+  Keyword: string[];
+  Skill1: string[];
+  Skill2: string[];
+  Skill3: string[];
+  Formation: string[];
+  Recipe: string[];
+  ThemePack: string[];
+  Effect: string;
+};
+export type EGOGiftCollection = Record<string, EGOGiftDetail>;
 
 @Injectable()
 export class EgogiftService {
