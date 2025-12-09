@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 import { CustomOrigin } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import 'reflect-metadata';
+import { AppExceptionFilter } from './common/filters/app-exception.filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 function swagger(app: INestApplication) {
   const config = new DocumentBuilder()
@@ -41,6 +43,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.useGlobalFilters(new AppExceptionFilter());
+  app.useGlobalInterceptors(new ResponseInterceptor());
 
   if (config.get<string>('CORS_REGEX_ORIGIN')) {
     CORS_ORIGIN.push(
