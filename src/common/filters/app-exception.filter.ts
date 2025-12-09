@@ -52,26 +52,35 @@ export class AppExceptionFilter implements ExceptionFilter {
     const messageFromResponse =
       typeof response === 'string'
         ? response
-        : (response as Record<string, unknown>)?.error ??
-          (response as Record<string, unknown>)?.message;
+        : ((response as Record<string, unknown>)?.error ??
+          (response as Record<string, unknown>)?.message);
 
-    const [status, message] = this.resolveMessage(exceptionStatus, messageFromResponse);
+    const [status, message] = this.resolveMessage(
+      exceptionStatus,
+      messageFromResponse,
+    );
 
     const detail =
       typeof response === 'string'
         ? response
-        : (response as Record<string, unknown>)?.message ??
-          (exception instanceof Error ? exception.message : response);
+        : ((response as Record<string, unknown>)?.message ??
+          (exception instanceof Error ? exception.message : response));
 
     const code = (HttpStatus[status] as string) || 'INTERNAL_SERVER_ERROR';
 
     return { status, code, message, detail };
   }
 
-  private resolveMessage(exceptionStatus: number, message: unknown): [number, string] {
+  private resolveMessage(
+    exceptionStatus: number,
+    message: unknown,
+  ): [number, string] {
     switch (exceptionStatus) {
       case HttpStatus.NOT_FOUND:
-        return [HttpStatus.NOT_FOUND, this.normalizeMessage(message, 'Not Found')];
+        return [
+          HttpStatus.NOT_FOUND,
+          this.normalizeMessage(message, 'Not Found'),
+        ];
       default:
         return [HttpStatus.INTERNAL_SERVER_ERROR, 'Internal server error'];
     }
