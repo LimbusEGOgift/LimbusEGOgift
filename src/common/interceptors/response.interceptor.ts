@@ -30,7 +30,7 @@ export class ResponseInterceptor<T>
         const statusCode = res?.statusCode ?? HttpStatus.OK;
         return {
           data: data ?? ({} as T),
-          message: (HttpStatus[statusCode] as string) ?? 'OK',
+          message: HttpStatus[statusCode] ?? 'OK',
           code: statusCode,
         };
       }),

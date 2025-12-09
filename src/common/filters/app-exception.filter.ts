@@ -44,8 +44,8 @@ export class AppExceptionFilter implements ExceptionFilter {
 
   private buildExceptionPayload(exception: unknown): ExceptionPayload {
     const isHttpException = exception instanceof HttpException;
-    const exceptionStatus = isHttpException
-      ? exception.getStatus()
+    const exceptionStatus: HttpStatus = isHttpException
+      ? (exception.getStatus() as HttpStatus)
       : HttpStatus.INTERNAL_SERVER_ERROR;
 
     const response = isHttpException ? exception.getResponse() : null;
@@ -66,15 +66,15 @@ export class AppExceptionFilter implements ExceptionFilter {
         : ((response as Record<string, unknown>)?.message ??
           (exception instanceof Error ? exception.message : response));
 
-    const code = (HttpStatus[status] as string) || 'INTERNAL_SERVER_ERROR';
+    const code = HttpStatus[status] || 'INTERNAL_SERVER_ERROR';
 
     return { status, code, message, detail };
   }
 
   private resolveMessage(
-    exceptionStatus: number,
+    exceptionStatus: HttpStatus,
     message: unknown,
-  ): [number, string] {
+  ): [HttpStatus, string] {
     switch (exceptionStatus) {
       case HttpStatus.NOT_FOUND:
         return [
